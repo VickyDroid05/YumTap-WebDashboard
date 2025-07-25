@@ -1,0 +1,162 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  display: flex;
+  background: #f4f4f4;
+}
+.sidebar {
+  width: 200px;
+  background: #1f2a37;
+  color: white;
+  padding: 20px;
+}
+.sidebar h2 {
+  margin-top: 0;
+}
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+.sidebar li {
+  padding: 10px 0;
+}
+.sidebar .active {
+  font-weight: bold;
+}
+.main {
+  flex: 1;
+  padding: 20px;
+}
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.card {
+  background: white;
+  padding: 20px;
+  flex: 1;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.charts {
+  display: flex;
+  gap: 20px;
+}
+.chart-box {
+  background: white;
+  padding: 20px;
+  flex: 1;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.chart-box img {
+  width: 100%;
+  height: 150px;
+  background: #eaeaea;
+}
+.table-box {
+  margin-top: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+tr:nth-child(even) {
+  background: #f9f9f9;
+}
+.pending {
+  background: #ffe08a;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.filters label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.filters input[type="date"] {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.filters button {
+  padding: 8px 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 18px;
+}
+
+.filters button:hover {
+  background: #0056b3;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  z-index: 1;
+  border-bottom: 2px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.order-status {
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-transform: capitalize;
+}
+
+.order-status.pending {
+  color: #f77400;        /* orange text */
+  background-color: #fae9cf;
+}
+
+.order-status.completed {
+  color: #048e09;        /* green text */
+  background-color: #d6f3d9;
+}
+
+.order-status.cancelled {
+  color: #c2190d;        /* red text */
+  background-color: #f594a2;
+}

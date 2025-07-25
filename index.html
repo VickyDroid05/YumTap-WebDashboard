@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pizza App Dashboard</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>YumTap Dash</h2>
+    <ul>
+      <li class="active">Dashboard</li>
+      <li>Orders</li>
+      <li>Reports</li>
+      <li>Settings</li>
+    </ul>
+  </div>
+  <div class="main">
+    <h1>Dashboard</h1>
+    <div class="stats">
+      <div class="card">Total Orders<br><strong id="totalOrders">--</strong></div>
+      <div class="card">Revenue<br><strong id="revenue">₹2,2540</strong></div>
+      <div class="card">Orders Pending<br><strong id="pendingOrders">--</strong></div>
+      <div class="card">Completed Orders<br><strong id="completedOrders">--</strong></div>
+    </div>
+    
+    <div class="charts">
+      <!-- <div class="chart-box">
+        <h3>Sales Overview</h3>
+        <img src="sales-placeholder.png" alt="Sales chart" />
+      </div> -->
+      <div class="chart-container">
+        <h3>Top 3 Pizza Sales</h3>
+        <canvas id="topPizzaChart" width="400" height="200"></canvas></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Top Selling Pizzas</h3>
+         <canvas id="salesChart" width="400" height="200"></canvas>
+      </div>
+    </div>
+
+    <div class="filters">
+      <label>From: <input type="date" id="startDate"></label>
+      <label>To: <input type="date" id="endDate"></label>
+      <button onclick="applyDateFilter()">Filter</button>
+    </div>
+
+    <div class="table-box">
+      <h3>Order Details</h3>
+      <table id="orders-table">
+        <tr>
+          <th></th>
+          <th>Item Name</th>
+          <th>Qty</th>
+          <th>Toppings</th>
+          <th>Total</th>
+        </tr>
+      <!-- Rows will be added here via Firebase -->
+      </table>
+    </div>
+  </div>
+  <script src="app.js" type="module"></script>
+</body>
+</html>
