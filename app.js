@@ -1,30 +1,30 @@
 // app.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
-console.log("Firebase initialized!");
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-firestore.js";
+console.log("FS initialized!");
+import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-firestore.js";
 import { firebaseConfig } from "./firebaseConfig.js";  
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 async function loadGroupedOrders() {
-  // const query  = query(collection(db, "orders"), orderBy("orderTimeStamp", "desc"));
-  // const ordersSnap = await getDocs(query);
+  
+  const q = query(collection(db, "orders"), orderBy("orderTimeStamp", "desc"), limit(5));
+  const ordersSnap = await getDocs(q);
+  const orders = ordersSnap.docs.map(doc => doc.data());
 
-  const ordersSnap = await getDocs(collection(db, "orders"));
   const table = document.getElementById("orders-table");
   const grouped = {};
   
-  renderTopSalesChart(ordersSnap);
+  renderTopSalesChart(orders);
 
-  updatePendingOrdersCount(ordersSnap);
-  updateTotalOrdersCount(ordersSnap);
-  updateRevenue(ordersSnap);
-  updateCompletedOrdersCount(ordersSnap);
+  updatePendingOrdersCount(orders);
+  updateTotalOrdersCount(orders);
+  updateRevenue(orders);
+  updateCompletedOrdersCount(orders);
   
   
-  ordersSnap.forEach((doc) => {
-    const order = doc.data();
+  orders.forEach((order) => {
     const orderId = order.orderId || doc.id;
 
     if (!grouped[orderId]) {
@@ -66,12 +66,11 @@ async function loadGroupedOrders() {
   });
 }
 
-async function renderTopSalesChart(ordersSnap) {
+async function renderTopSalesChart(orders) {
 
   const salesMap = {}; // { "Margherita Pizza": { quantity: 3, revenue: 500 } }
 
-  ordersSnap.forEach((doc) => {
-    const order = doc.data();
+  orders.forEach((order) => {
     order.items?.forEach((item) => {
       const key = item.pizzaName;
 
@@ -111,21 +110,18 @@ async function renderTopSalesChart(ordersSnap) {
     }
   });
 
-  console.log("Top Sales Map:", salesMap);
   const ctx2 = document.getElementById('topPizzaChart').getContext('2d');
   const sorted = Object.entries(salesMap)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3);
-  console.log("Sorted Top Sales:", sorted);
   const top3labels = sorted.map(([name]) => name);
   const dataValues = sorted.map(([_, qty]) => qty.quantity); 
-  console.log("DateValues Top Sales:", dataValues);
 
   const data2 = {
     labels: top3labels,
     datasets: [{
       label: 'Top 3 Sales',
-      data: dataValues, // Placeholder sales values
+      data: dataValues, 
       backgroundColor: [
         'rgba(54, 162, 235, 0.7)',
         'rgba(173, 255, 47, 0.7)',
@@ -154,24 +150,26 @@ async function renderTopSalesChart(ordersSnap) {
   });
 }
 
-async function updatePendingOrdersCount(ordersSnap){
-    const pendingCount = ordersSnap.docs.filter(doc => doc.data().status === 'Pending').length;
+function updatePendingOrdersCount(orders){
+    const pendingCount = orders.filter(order => order.status === 'Pending').length;
     document.getElementById('pendingOrders').textContent = pendingCount;
 }
-async function updateTotalOrdersCount(ordersSnap){
-    const totalCount = ordersSnap.size;
+
+function updateTotalOrdersCount(orders){
+    const totalCount = orders.length;
     document.getElementById('totalOrders').textContent = totalCount;
 }
-async function updateRevenue(ordersSnap){
-    const totalRevenue = ordersSnap.docs.reduce((sum, doc) => {
-        const order = doc.data();
+
+function updateRevenue(orders){
+    const totalRevenue = orders.reduce((sum, order) => {
         return sum + (order.items?.reduce((itemSum, item) => itemSum + item.totalPrice, 0) || 0);
     }, 0);
-    document.getElementById('totalRevenue').textContent = `₹${totalRevenue.toFixed(2)}`;
+    document.getElementById('revenue').textContent = `₹${totalRevenue.toFixed(2)}`;
 }
-async function updateCompletedOrdersCount(ordersSnap){
-    const completedCount = ordersSnap.docs.filter(doc => doc.data().status === 'Completed').length;
+
+function updateCompletedOrdersCount(orders){
+    const completedCount = orders.filter(order => order.status === 'Completed').length;
     document.getElementById('completedOrders').textContent = completedCount;
 } 
-// loadOrders();
+
 loadGroupedOrders();
